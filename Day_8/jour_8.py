@@ -36,39 +36,59 @@ def compte_arbres_visibles(tableau, n, m):
 def visibilite_de_l_arbre(tableau, i,j, n,m,val):
     visibilite = [0,0,0,0]
 
-    k = i
-    while k>1 and val <= tableau[k][j]:             #boucle décroissante (on remonte)
-        if val == tableau[i][k]:
+    if i == 0 : 
+        visibilite[0]+=1
+    elif j == 0:
+        visibilite[2]+=1
+    elif i == n:
+        visibilite[1]+=1
+    elif j == m :
+        visibilite[3]+=1
+    
+
+    k = i-1
+
+
+    
+    while k >=0 :
+        if tableau[k][j] >= val:
             visibilite[0]+=1
             break
-        visibilite[0] +=1
-        k = k-1
+        else :
+            visibilite[0]+=1
+        k = k - 1
     
     k = i+1
-    while k < n-1 and val <= tableau[k][j]:          #boucle croissante (on descend)
-        if val == tableau[i][k]:
+    while k  < n:
+        if tableau[k][j] >= val:
             visibilite[1]+=1
             break
-        visibilite[1] +=1
-        k +=1
-    
-    k = j
-    while k > 1 and val <= tableau[i][k]:                   #boucle décroissante (on va à gauche)
-        if val == tableau[i][k]:
+        else :
+            visibilite[1]+=1
+        k+=1
+
+    k = j - 1
+    while k >= 0:
+        if tableau[i][k] >= val :
             visibilite[2]+=1
             break
-        visibilite[2] +=1
+        else :
+            visibilite[2]+=1
         k = k-1
     
-    k = j+1
-    while k < m-1 and  val <= tableau[i][k]:        #boucle croissante (on va à droite)
-        if val == tableau[i][k]:
+    k = j +1
+    while k < m:
+        if tableau[i][k] >= val:
             visibilite[3]+=1
             break
-        visibilite[3] +=1
+        else :
+            visibilite[3]+=1
         k+=1
     
-    return visibilite[0] * visibilite[1] * visibilite[2] * visibilite[3]
+    
+    return visibilite[0]*visibilite[1] * visibilite[2] * visibilite[3]
+    
+
 
 
 def trouve_arbre_meilleure_vue(tableau, n, m):
