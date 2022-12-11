@@ -1,50 +1,65 @@
 from pprint import*
 
-#Dictionnaire_arborescence {nom_dossier : (taille_fichiers, liste_fils)}
-Dictionnaire_arborescence = {}
-Dictionnaire_taille = {}
+#Fonctionne mais ne fait pas l'arbre
 
-def remplir_Dictionnaire_arborescence (fichier):
-    """Créé l'arborescence correspondant au fichier en remplissant le dictionnaire en variable globale"""
-    dossier_precedent = ""
-    dossier_courant = "/"
+def compte_taille(fichier):
+    pile_path = []
+    liste_res = []
 
-    for ligne in fichier : 
-        if ligne[0] == "$":
-            if ligne[1] == "cd" : 
-                if ligne[2] == "..":
-                    dossier_courant = dossier_precedent
-                else:
-                    dossier_precedent = dossier_courant
-                    dossier_courant = ligne[2]
-                    Dictionnaire_arborescence[dossier_courant] = (0,[])
-        else : 
-            if ligne[0] == "dir":
-                Dictionnaire_arborescence[dossier_courant][1].append(ligne[1])
-            else :
-                Dictionnaire_arborescence[dossier_courant] = (Dictionnaire_arborescence[dossier_courant][0] + int(ligne[0]), Dictionnaire_arborescence[dossier_courant][1])
-    return Dictionnaire_arborescence
-
-def calculer_taille_dictionnaire(cle):
-    """Calcule récursivement la taille du dossier et la note dans le dictionnaire de la taille"""
-    if Dictionnaire_arborescence[cle][1] == []:
-        Dictionnaire_taille[cle] = Dictionnaire_arborescence[cle][0]
+    for ligne in fichier :
         
-    else : 
-        taille = Dictionnaire_arborescence[cle][0]
-        for fils in Dictionnaire_arborescence[cle][1]:
-            taille+= calculer_taille_dictionnaire(fils)
-        Dictionnaire_taille[cle] = taille
-    
-    return Dictionnaire_taille[cle]
+        if ligne[0] == "$":
+            if ligne[1] == "cd":
+                if ligne[2] == "..":
 
-def calculer_cout_inf(borne : int):
+                    retrait = pile_path.pop()
+                    liste_res.append([retrait[0],retrait[1]])
+                    
+                else :
+                    pile_path.append([ligne[2],0])
+                    
+        else : 
+            if ligne[0] != "dir" : 
+                for dir in pile_path :
+                    dir[1] += int(ligne[0])
+
+    
+    for dir in pile_path :
+        liste_res.append(dir)
+        if (dir[0]=="/"):
+            pere = (dir)
+
+    return (liste_res,pere)
+
+
+def calculer_cout_inf(borne : int, liste_tailles):
     """Calcule la somme des tailles des dossiers dont le coût est inférieur à la borne."""
     somme : int = 0
-    for cle in Dictionnaire_taille : 
-        if Dictionnaire_taille[cle] <= borne:
-            somme+= Dictionnaire_taille[cle]
+    for taille in liste_tailles : 
+        if taille[1] <= borne:
+            somme+= taille[1]
     return somme 
+
+
+def calculer_plus_petit_taille_sup(borne : int, liste_tailles):
+    """Retourne le nom du plus petit répertoire dont la taille dépasse la borne supérieure"""
+    taille_min_sup_borne = -1
+
+    for dir in liste_tailles : 
+        if dir[1] >= borne :
+            if(taille_min_sup_borne == -1):
+                taille_min_sup_borne = dir[1]
+            else :
+                if dir[1] < taille_min_sup_borne :
+                    taille_min_sup_borne = dir[1]
+    
+    return taille_min_sup_borne
+
+def calculer_taille_necessaire(espace_total, espace_necessaire, pere) :
+    """Calcule l'espace qu'il faut nécessairement supprimer"""
+    return espace_necessaire -  (espace_total - pere[1] )
+
+    
 
 def main():
     filename = input("Filename ?")
@@ -56,25 +71,20 @@ def main():
         for ligne in liste_ligne:
             liste_instructions.append(ligne.split(" "))
 
-        remplir_Dictionnaire_arborescence(liste_instructions)
+        liste_plus_pere = compte_taille(liste_instructions)
+        pprint(liste_plus_pere[0])
 
-        calculer_taille_dictionnaire("/")
 
-        print(str(calculer_cout_inf(100000)))
+        
+        print(str(calculer_cout_inf(100000,liste_plus_pere[0])))
 
-      
+        espace_a_suppr = calculer_taille_necessaire(70000000,30000000,liste_plus_pere[1])
+
+        print(str(calculer_plus_petit_taille_sup(espace_a_suppr,liste_plus_pere[0])))
+
+
+
 
 if __name__ == '__main__':
 	main()
-
-
-
-
-
-
-
-
-
-
-
 
