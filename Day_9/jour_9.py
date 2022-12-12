@@ -1,0 +1,106 @@
+from pprint import*
+
+#REVOIR LA GESTION DES COINS ET DU SUIVI PAR LA QUEUE (ne considère pas qu'elle puisse bouger en diagonale)
+#la tête suit le bon chemin !
+
+
+def est_a_cote(tete,queue):
+    """Retourne si la queue est bien à côté de la tête"""
+    return queue in {(tete), (tete[0]-1,tete[1]), (tete[0]-1, tete[1]-1), (tete[0], tete[1]-1), (tete[0]+1,tete[1]-1), (tete[0]+1,tete[1]), (tete[0]+1,tete[1]+1), (tete[0],tete[1]+1), (tete[0]-1,tete[1]+1) }
+
+
+def avancer_selon_instruction(tete,queue, instruction):
+    """Retourne le couple de couples de coordonnées (tete, queue)  après l'instruction passée en paramètres"""
+
+
+    if instruction == "U" :
+        x_t = tete[0]+1
+        y_t = tete[1]
+        tete = (x_t,y_t)
+        
+    if instruction == "D" :
+        x_t = tete[0]-1
+        y_t = tete[1]
+        tete = (x_t,y_t)
+        
+    
+    if instruction == "L" :
+        x_t = tete[0]
+        y_t = tete[1]-1
+        tete = (x_t,y_t)
+        
+    
+    if instruction == "R" :
+        x_t = tete[0]
+        y_t = tete[1]+1
+        tete = (x_t,y_t)
+    
+    x_q = queue[0]
+    y_q = queue[1]
+
+    if tete[0]-x_q == 2 :
+        x_q +=1
+    elif tete[0] - x_q == -2:
+        x_q -=1
+    if tete[1]-y_q == 2:
+        y_q +=1
+    elif tete[1]-y_q == -2:
+        y_q-=1
+
+    queue = (x_q,y_q)    
+
+    print("Position finale: ")
+    print( tete)
+    print(queue)
+
+    return (tete,queue)
+
+
+def suivre_instructions(liste_instructions):
+    
+    tete = (0,0)
+    queue = (0,0)
+    ens_position_queue = set()
+    ens_position_tete = set()
+
+    for instruction in liste_instructions :
+        for i in range (int(instruction[1])):
+            (t,q) = avancer_selon_instruction(tete,queue,instruction[0])
+            tete = t
+            queue = q
+            ens_position_queue.add(queue)
+            ens_position_tete.add(tete)
+    pprint(ens_position_tete)
+    return ens_position_queue
+
+
+def main():
+    filename = input("Filename ?")
+    with open(filename, 'r') as f:
+        fichier = f.read()
+        liste_ligne = fichier.split("\n")
+        liste_instructions = []
+
+        for ligne in liste_ligne:
+            liste_instructions.append(ligne.split(" "))
+
+        res = suivre_instructions(liste_instructions)
+        pprint(res)
+
+
+        print("Nombre de positions prises par T :" + str(len(res)))
+
+
+
+
+if __name__ == '__main__':
+	main()
+
+
+    
+
+    
+    
+    
+        
+
