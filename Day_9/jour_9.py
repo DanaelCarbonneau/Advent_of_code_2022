@@ -9,9 +9,10 @@ def ecart(tete,queue):
     return tete[0] - queue[0] > 1 or tete[0] - queue[0] < -1 or tete[1]-queue[1] > 1 or tete[1] - queue[1] < -1
 
 def rapproche(coord_q, coord_t):
-    if coord_q :
-        return a -1
+    if coord_q > coord_t:
+        return coord_q -1
     else:
+        return coord_q +1
 
 def avancer_selon_instruction(tete,queue, instruction):
     """Retourne le couple de couples de coordonnées (tete, queue)  après l'instruction passée en paramètres"""
@@ -69,7 +70,7 @@ def suivre_instructions(liste_instructions):
             queue = q
 
             ens_position_queue.add(queue)
-            draw(tete,queue)
+            #draw(tete,queue)
     return ens_position_queue
 
 
