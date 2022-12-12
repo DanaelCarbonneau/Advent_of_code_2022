@@ -4,10 +4,16 @@ from pprint import*
 #la tête suit le bon chemin !
 
 
-def est_a_cote(tete,queue):
-    """Retourne si la queue est bien à côté de la tête"""
-    return queue in {(tete), (tete[0]-1,tete[1]), (tete[0]-1, tete[1]-1), (tete[0], tete[1]-1), (tete[0]+1,tete[1]-1), (tete[0]+1,tete[1]), (tete[0]+1,tete[1]+1), (tete[0],tete[1]+1), (tete[0]-1,tete[1]+1) }
+def ecart(tete,queue):
+    """Fonction qui retourne vrai s'il y a un écart nécessitant déplacement entre la tête et la queue"""
+    return tete[0] - queue[0] > 1 or tete[0] - queue[0] < -1 or tete[1]-queue[1] > 1 or tete[1] - queue[1] < -1
 
+def rapproche(coord_q, coord_t):
+    if coord_q == coord_t -2:
+        coord_q+=1
+    elif coord_q == coord_t +2:
+        coord_q-=1
+    return coord_q
 
 def avancer_selon_instruction(tete,queue, instruction):
     """Retourne le couple de couples de coordonnées (tete, queue)  après l'instruction passée en paramètres"""
@@ -35,20 +41,16 @@ def avancer_selon_instruction(tete,queue, instruction):
         y_t = tete[1]+1
         tete = (x_t,y_t)
     
+
     x_q = queue[0]
     y_q = queue[1]
-
-    if tete[0]-x_q == 2 :
-        x_q +=1
-    elif tete[0] - x_q == -2:
-        x_q -=1
-    if tete[1]-y_q == 2:
-        y_q +=1
-    elif tete[1]-y_q == -2:
-        y_q-=1
-
-    queue = (x_q,y_q)    
-
+    if ecart(tete,queue):
+        if tete[0] != queue[0]:
+            x_q = rapproche(queue[0], tete[0])
+        if tete[1] != queue[1]:
+            y_q = rapproche(queue[1], tete[1])
+    
+    queue = (x_q,y_q)
     print("Position finale: ")
     print( tete)
     print(queue)
@@ -68,10 +70,24 @@ def suivre_instructions(liste_instructions):
             (t,q) = avancer_selon_instruction(tete,queue,instruction[0])
             tete = t
             queue = q
+
             ens_position_queue.add(queue)
-            ens_position_tete.add(tete)
-    pprint(ens_position_tete)
+            draw(tete,queue)
     return ens_position_queue
+
+
+def draw(tete, queue):
+    for x in range(10,0):
+        ligne = ""
+        for y in range(0,10):
+            if x == tete[0] and y == tete[1]:
+                ligne+= "H"
+            elif x == queue[0] and y == queue[1]:
+                ligne+="T"
+            else:
+                ligne+="."
+        print(ligne)
+    print("\n")
 
 
 def main():
