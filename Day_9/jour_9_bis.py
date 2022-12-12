@@ -1,8 +1,5 @@
 from pprint import*
 
-#REVOIR LA GESTION DES COINS ET DU SUIVI PAR LA QUEUE (ne considère pas qu'elle puisse bouger en diagonale)
-#la tête suit le bon chemin !
-
 
 def ecart(tete,queue):
     """Fonction qui retourne vrai s'il y a un écart nécessitant déplacement entre la tête et la queue"""
@@ -13,9 +10,9 @@ def rapproche(coord_q, coord_t):
         return coord_q -1
     else:
         return coord_q +1
-        
-def avancer_selon_instruction(tete,queue, instruction):
-    """Retourne le couple de couples de coordonnées (tete, queue)  après l'instruction passée en paramètres"""
+
+def avancer_selon_instruction(tete, instruction):
+    """Retourne la position de la tête après l'instruction"""
 
 
     if instruction == "U" :
@@ -41,43 +38,43 @@ def avancer_selon_instruction(tete,queue, instruction):
         tete = (x_t,y_t)
     
 
-    x_q = queue[0]
-    y_q = queue[1]
-    if ecart(tete,queue):
-        if tete[0] != queue[0]:
-            x_q = rapproche(queue[0], tete[0])
-        if tete[1] != queue[1]:
-            y_q = rapproche(queue[1], tete[1])
-    
-    queue = (x_q,y_q)
-    print("Position finale: ")
-    print( tete)
-    print(queue)
 
-    return (tete,queue)
-
+    return tete
 
 def suivre_instructions(liste_instructions):
-    
-    tete = (0,0)
-    queue = (0,0)
+    tab_coordonnées = [(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0), (0,0)]
     ens_position_queue = set()
 
     for instruction in liste_instructions :
         for i in range (int(instruction[1])):
-            (t,q) = avancer_selon_instruction(tete,queue,instruction[0])
-            tete = t
-            queue = q
+            tete = avancer_selon_instruction(tab_coordonnées[0],instruction[0])
+            tab_coordonnées[0] = tete
+            for j in range (len(tab_coordonnées)-1):
 
-            ens_position_queue.add(queue)
-            draw(tete,queue)
+                x_suiv = tab_coordonnées[j+1][0]
+                y_suiv = tab_coordonnées[j+1][1]
+
+                if ecart(tab_coordonnées[j], tab_coordonnées[j+1]):
+
+                    if tab_coordonnées[j][0]!= tab_coordonnées[j+1][0]:
+                        x_suiv = rapproche(tab_coordonnées[j+1][0],tab_coordonnées[j][0])
+                    
+                    if tab_coordonnées[j][1] != tab_coordonnées[j+1][1]:
+                        y_suiv = rapproche(tab_coordonnées[j+1][1],tab_coordonnées[j][1])
+                    
+                tab_coordonnées[j+1] = (x_suiv,y_suiv)
+
+            print(tab_coordonnées) 
+            ens_position_queue.add(tab_coordonnées[-1])
+
+            #draw(tab_coordonnées[0],tab_coordonnées[-1])
     return ens_position_queue
 
 
 def draw(tete, queue):
-    for x in range(0,5):
+    for x in range(0,50):
         ligne = ""
-        for y in range(0,6):
+        for y in range(0,60):
             if x == tete[0] and y == tete[1]:
                 ligne+= "H"
             elif x == queue[0] and y == queue[1]:
@@ -99,7 +96,7 @@ def main():
             liste_instructions.append(ligne.split(" "))
 
         res = suivre_instructions(liste_instructions)
-        pprint(res)
+        
 
 
         print("Nombre de positions prises par T :" + str(len(res)))
