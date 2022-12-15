@@ -150,7 +150,5 @@ void tour_singe(singe* s, singe** tab_singes){
         }
         s->cpt_objts++;
     }
-    
-
 }
 
