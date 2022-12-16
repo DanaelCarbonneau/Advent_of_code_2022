@@ -1,1 +1,7 @@
 TOUT REFAIRE EN PYTHON AVEC DES TUPLES CE SERA PLUS FACILE !!!!
+
+
+Pour la partie 2 : un dictionnaire qui répertorie les opérations faites sur chaque nombre, 
+qui sont refaites avant chaque inspection pour éviter à avoir à stocker de trop gros entiers ?
+
+Oui mais sur le moment ce sera quand même de gros entiers ?

@@ -1,4 +1,4 @@
-all : jour_11_input
+
 
 jour_11 : jour_11.o structures.o
 	gcc -o jour_11 jour_11.o structures.o
