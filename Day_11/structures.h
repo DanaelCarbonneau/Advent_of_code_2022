@@ -5,7 +5,7 @@
 #include<stdlib.h>
 
 typedef struct _c_fifo{
-    int n;           //Représente le niveau d'inquiétude dans notre problème
+    long long int n;           //Représente le niveau d'inquiétude dans notre problème
     struct _c_fifo* precedent;
     struct _c_fifo* suivant;
 } c_fifo;
@@ -17,7 +17,7 @@ typedef struct _fifo{
 
 
 /*Fonction permettant de créer une cellule de la file d'attente*/
-c_fifo* creer_cellule(int n);
+c_fifo* creer_cellule(long long int n);
 
 /*Fonction permettant de créer une file vide*/
 fifo* creer_file();
