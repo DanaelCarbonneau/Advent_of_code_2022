@@ -105,6 +105,17 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
             sommets_ouverts.pop(d_min)
 
     ecrire_distances(distances)
+    i = 0
+    for ligne in distances:
+        j = 0
+        for c in ligne : 
+
+            if c == 39 : 
+                print("Coordonnées : ")
+                print((i,j))
+            j+=1
+        i+=1
+        
     return distances[coord_depart[0]][coord_depart[1]]
 
 
@@ -142,6 +153,11 @@ def main():
     
     print(dijkstra_matrice(matrice,depart,arrivee))
 
+    pprint(voisins(matrice,(11,60)))
+
+    print("Voisin : " + matrice[12][60] + "de "+ matrice[11][60])
+
+    
 
 
 
