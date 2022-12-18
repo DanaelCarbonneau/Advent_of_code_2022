@@ -5,7 +5,11 @@ from pprint import*
 
 def tour_jeu(liste_singe,tab_inspection):
     """Fonction simulant un tour du jeu pour la liste de singes passée en paramètres"""
-
+    mod = 1
+    for singe in liste_singe :
+        mod = mod * singe[4]
+        
+    
     for singe in liste_singe :
 
         while singe[1]!= []:
@@ -17,7 +21,9 @@ def tour_jeu(liste_singe,tab_inspection):
             elif (singe[2]=='^'):
                 obj_courant = obj_courant * obj_courant
             
-            
+
+            obj_courant = int(obj_courant%mod)
+
 
             if (obj_courant % singe[4] == 0) :
                 liste_singe[singe[5]][1].append(obj_courant)
@@ -72,19 +78,23 @@ def main():
     s2 = (2,[79, 60, 97],'^',2,13,1,3)
     s3 = (3,[74],'+',3,17,0,1)
 
-    l = lire_input("essai.txt")
+    l = lire_input("input_11.txt")
 
     tab_inspection = [0 for i in range(len(l))]
 
     pprint(tab_inspection)
-    
+
+
     for i in range (10000):
         (l,tab_inspection) = tour_jeu(l,tab_inspection)
     
 
-    print("Résultat : ")
+    print("Résultats : ")
     pprint(tab_inspection)
 
+    
+
+    
 
 if __name__ == '__main__':
 	main()
