@@ -18,7 +18,7 @@ def passage_autorise(a,b):
     
 
     if a == 'S' :
-        return b == 'a' or b == 'b'
+        return 1
 
     return ord(b) <= ord(a)+1
 
@@ -53,6 +53,7 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
     le sommet de coordonnées doord_dest"""
 
     sommets_ouverts = {0:[coord_dest]}
+
     
 
     distances = []
@@ -103,10 +104,19 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
         if sommets_ouverts[d_min]== []:
             sommets_ouverts.pop(d_min)
 
-    pprint(distances)
+    ecrire_distances(distances)
     return distances[coord_depart[0]][coord_depart[1]]
 
 
+def ecrire_distances(distances):
+    with open("distances",'w') as f :
+        for ligne in distances:
+            for c in ligne : 
+                f.write(" " + str(c) + " ")
+            
+            f.write("\n")
+
+        
 
 def recuperer_graphe():
     filename = input("Filename ?")
