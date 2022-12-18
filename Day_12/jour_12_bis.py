@@ -18,7 +18,7 @@ def passage_autorise(a,b):
     
 
     if a == 'S' :
-        return 1
+        return True
 
     return ord(b) <= ord(a)+1
 
