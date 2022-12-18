@@ -20,7 +20,7 @@ def passage_autorise(a,b):
     if a == 'S' :
         return b == 'a' or b == 'b'
 
-    return (ord(a) == ord(b)) or (ord(a) == ord(b)-1) or (ord(a) == ord(b)+1)
+    return ord(b) <= ord(a)+1
 
 def voisins(matrice,x):
     res = []
@@ -70,10 +70,8 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
             l_visites.append(0)
         visites.append(l_visites)
     
-    i = 0
-    j = 0
 
-    while sommets_ouverts != {}:
+    for i in range(len(matrice)*len(matrice[0])+1):
         d_min = trouver_sommet_minimum(sommets_ouverts)
 
         if d_min == -1 :
@@ -88,11 +86,9 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
 
             if (distances[v[0]][v[1]] == -1) :
                 distances[v[0]][v[1]] = distances[x[0]][x[1]] + 1
-                j+=1
             
             if (distances[v[0]][v[1]] > distances[x[0]][x[1]] + 1) :
                 distances[v[0]][v[1]] = distances[x[0]][x[1]] + 1 
-                j+=1
 
             if visites[v[0]][v[1]] == 0 : 
 
@@ -102,8 +98,8 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
                 else :
                     sommets_ouverts[distances[v[0]][v[1]]] = [v]
 
-        pprint(sommets_ouverts)
         visites[x[0]][x[1]] = 1
+
         if sommets_ouverts[d_min]== []:
             sommets_ouverts.pop(d_min)
 
