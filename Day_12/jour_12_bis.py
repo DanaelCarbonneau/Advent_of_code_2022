@@ -53,6 +53,7 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
     le sommet de coordonnées doord_dest"""
 
     sommets_ouverts = {0:[coord_dest]}
+    c_sommets_ouverts = set()
 
     
 
@@ -94,10 +95,10 @@ def dijkstra_matrice(matrice, coord_depart, coord_dest):
             if visites[v[0]][v[1]] == 0 : 
 
                 if distances[v[0]][v[1]] in sommets_ouverts.keys() :
-                    
                     sommets_ouverts[distances[v[0]][v[1]]].append(v)
                 else :
                     sommets_ouverts[distances[v[0]][v[1]]] = [v]
+                    c_sommets_ouverts.add(v)
 
         visites[x[0]][x[1]] = 1
 
